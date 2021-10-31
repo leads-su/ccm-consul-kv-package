@@ -143,6 +143,43 @@ class KeyValueRepositoryTest extends AbstractRepositoryTest
     }
 
     /**
+     * @param array $data
+     * @dataProvider entityDataProvider
+     * @return void
+     */
+    public function testShouldPassIfValidDataReturnedFromChangelogRequest(array $data): void
+    {
+        $entity = $this->repository()->create(Arr::get($data, 'path'), Arr::get($data, 'value'));
+        $this->assertSameReturned($entity, $data);
+        $response = $this->repository()->changelog(Arr::get($data, 'path'));
+        $this->assertCount(1, $response);
+    }
+
+    /**
+     * @param array $data
+     * @dataProvider entityDataProvider
+     * @return void
+     */
+    public function testShouldPassIfFalseReturnedUponDeletingNonExistingEntry(array $data): void
+    {
+        $response = $this->repository()->delete(Arr::get($data, 'path'));
+        $this->assertFalse($response);
+    }
+
+    /**
+     * @param array $data
+     * @dataProvider entityDataProvider
+     * @return void
+     */
+    public function testShouldPassIfTrueReturnedUponForceDeletingEntry(array $data): void
+    {
+        $entity = $this->repository()->create(Arr::get($data, 'path'), Arr::get($data, 'value'));
+        $this->assertSameReturned($entity, $data);
+        $response = $this->repository()->forceDelete(Arr::get($data, 'path'));
+        $this->assertTrue($response);
+    }
+
+    /**
      * Create new repository instance
      * @return KeyValueRepositoryInterface
      */

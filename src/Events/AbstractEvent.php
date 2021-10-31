@@ -43,7 +43,9 @@ abstract class AbstractEvent extends ShouldBeStored
         if (property_exists($this, 'dateTime') && $this->dateTime !== 0) {
             return $this->dateTime;
         }
+        // @codeCoverageIgnoreStart
         return time();
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -66,7 +68,9 @@ abstract class AbstractEvent extends ShouldBeStored
     {
         if (property_exists($this, 'user') && $this->user !== null) {
             if (is_integer($this->user)) {
+                // @codeCoverageIgnoreStart
                 return $this->user;
+                // @codeCoverageIgnoreEnd
             }
             return $this->user->getID();
         }
@@ -98,9 +102,11 @@ abstract class AbstractEvent extends ShouldBeStored
              */
             $user = $request->user();
             if ($user !== null) {
+                // @codeCoverageIgnoreStart
                 return $user->getID();
+                // @codeCoverageIgnoreEnd
             }
         }
-        return 0;
+        return 1;
     }
 }

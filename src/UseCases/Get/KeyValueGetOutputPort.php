@@ -12,13 +12,6 @@ use ConsulConfigManager\Domain\Interfaces\ViewModel;
 interface KeyValueGetOutputPort
 {
     /**
-     * Output port for "missing key"
-     * @param KeyValueGetResponseModel $responseModel
-     * @return ViewModel
-     */
-    public function missingKey(KeyValueGetResponseModel $responseModel): ViewModel;
-
-    /**
      * Output port for "read"
      * @param KeyValueGetResponseModel $responseModel
      * @return ViewModel

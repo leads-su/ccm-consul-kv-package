@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use ConsulConfigManager\Users\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\EventSourcing\StoredEvents\StoredEvent;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
@@ -219,6 +220,9 @@ class KeyValue extends Model implements KeyValueInterface
         $storedEvents = $storedEventRepository->retrieveAll($uuid);
         $history = [];
 
+        /**
+         * @var StoredEvent $eventModel
+         */
         foreach ($storedEvents as $index => $eventModel) {
             $eventAccessors = array_filter(get_class_methods($eventModel->event), static function (string $method): bool {
                 return Str::startsWith($method, 'get') && $method !== 'getUser';
@@ -232,7 +236,7 @@ class KeyValue extends Model implements KeyValueInterface
 
             Arr::set($history, $index . '.event', [
                 'id'        =>  $eventModel->id,
-                'uuid'      =>  $eventModel->aggragate_uuid,
+                'uuid'      =>  $eventModel->aggregate_uuid,
                 'class'     =>  $eventModel->event_class,
                 'version'   =>  $eventModel->aggregate_version,
             ]);
@@ -261,13 +265,13 @@ class KeyValue extends Model implements KeyValueInterface
     /**
      * @inheritDoc
      */
-    public function resolverReferencePath(array $value): array
+    public function resolveReferencePath(array $value): array
     {
         $key = Arr::get($value, 'value');
-        $referenceModel = KeyValue::where('path', '=', $key)->toArray();
+        $referenceModel = KeyValue::where('path', '=', $key)->first()->toArray();
         $referenceValue = Arr::get($referenceModel, 'value');
         if (Arr::get($referenceValue, 'type') === 'reference') {
-            $referenceValue = $this->resolverReferencePath($referenceValue);
+            $referenceValue = $this->resolveReferencePath($referenceValue);
         }
         return [
             'reference'     =>  $key,

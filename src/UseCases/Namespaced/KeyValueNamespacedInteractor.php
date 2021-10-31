@@ -45,11 +45,13 @@ class KeyValueNamespacedInteractor implements KeyValueNamespacedInputPort
             return $this->output->namespaced(new KeyValueNamespacedResponseModel(
                 $this->repository->allNamespaced()
             ));
+            // @codeCoverageIgnoreStart
         } catch (Throwable $exception) {
             return $this->output->internalServerError(
                 new KeyValueNamespacedResponseModel(),
                 $exception
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 }

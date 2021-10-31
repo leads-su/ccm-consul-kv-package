@@ -45,11 +45,13 @@ class KeyValueReferencesInteractor implements KeyValueReferencesInputPort
             return $this->output->references(new KeyValueReferencesResponseModel(
                 $this->repository->references()
             ));
+            // @codeCoverageIgnoreStart
         } catch (Throwable $exception) {
             return $this->output->internalServerError(
                 new KeyValueReferencesResponseModel(),
                 $exception
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 }

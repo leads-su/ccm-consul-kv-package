@@ -4,8 +4,13 @@ namespace ConsulConfigManager\Consul\KeyValue\Test;
 
 use Illuminate\Foundation\Application;
 use ConsulConfigManager\Testing\Concerns;
+use ConsulConfigManager\Users\Models\User;
 use Spatie\EventSourcing\EventSourcingServiceProvider;
 use ConsulConfigManager\Consul\KeyValue\ConsulKeyValueDomain;
+use ConsulConfigManager\Users\Providers\UsersServiceProvider;
+use ConsulConfigManager\Users\Domain\ValueObjects\EmailValueObject;
+use ConsulConfigManager\Users\Domain\ValueObjects\PasswordValueObject;
+use ConsulConfigManager\Users\Domain\ValueObjects\UsernameValueObject;
 use ConsulConfigManager\Consul\KeyValue\Providers\ConsulKeyValueServiceProvider;
 
 /**
@@ -23,6 +28,7 @@ abstract class TestCase extends \ConsulConfigManager\Testing\TestCase
     protected array $packageProviders = [
         EventSourcingServiceProvider::class,
         ConsulKeyValueServiceProvider::class,
+        UsersServiceProvider::class,
     ];
 
     /**
@@ -41,6 +47,20 @@ abstract class TestCase extends \ConsulConfigManager\Testing\TestCase
     public function runBeforeSetUp(): void
     {
         ConsulKeyValueDomain::registerRoutes();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function runAfterSetUp(): void
+    {
+        User::create([
+            'first_name'    =>  'System',
+            'last_name'     =>  'User',
+            'username'      =>  new UsernameValueObject('system'),
+            'email'         =>  new EmailValueObject('admin@leads.su'),
+            'password'      =>  new PasswordValueObject('1234567890'),
+        ]);
     }
 
     /**

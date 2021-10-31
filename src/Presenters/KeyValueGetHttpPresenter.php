@@ -18,18 +18,6 @@ class KeyValueGetHttpPresenter implements KeyValueGetOutputPort
     /**
      * @inheritDoc
      */
-    public function missingKey(KeyValueGetResponseModel $responseModel): ViewModel
-    {
-        return new HttpResponseViewModel(response_error(
-            [],
-            'You have to specify key',
-            Response::HTTP_BAD_REQUEST,
-        ));
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function read(KeyValueGetResponseModel $responseModel): ViewModel
     {
         return new HttpResponseViewModel(response_success(
@@ -51,6 +39,7 @@ class KeyValueGetHttpPresenter implements KeyValueGetOutputPort
         ));
     }
 
+    // @codeCoverageIgnoreStart
     /**
      * @inheritDoc
      */
@@ -64,4 +53,5 @@ class KeyValueGetHttpPresenter implements KeyValueGetOutputPort
             'Unable to retrieve key value information'
         ));
     }
+    // @codeCoverageIgnoreEnd
 }

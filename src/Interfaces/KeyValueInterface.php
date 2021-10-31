@@ -119,7 +119,7 @@ interface KeyValueInterface extends Arrayable, ArrayAccess, HasBroadcastChannel,
      * @param array $value
      * @return array
      */
-    public function resolverReferencePath(array $value): array;
+    public function resolveReferencePath(array $value): array;
 
     /**
      * Resolve target value for reference

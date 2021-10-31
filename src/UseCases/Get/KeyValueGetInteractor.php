@@ -43,9 +43,6 @@ class KeyValueGetInteractor implements KeyValueGetInputPort
     public function read(KeyValueGetRequestModel $requestModel): ViewModel
     {
         $key = $requestModel->getKey();
-        if ($key === null) {
-            return $this->output->missingKey(new KeyValueGetResponseModel());
-        }
 
         try {
             return $this->output->read(new KeyValueGetResponseModel(
@@ -55,7 +52,9 @@ class KeyValueGetInteractor implements KeyValueGetInputPort
             if ($exception instanceof ModelNotFoundException) {
                 return $this->output->keyNotFound(new KeyValueGetResponseModel());
             }
+            // @codeCoverageIgnoreStart
             return $this->output->internalServerError(new KeyValueGetResponseModel(), $exception);
+            // @codeCoverageIgnoreEnd
         }
     }
 }

@@ -27,6 +27,7 @@ class KeyValueNamespacedHttpPresenter implements KeyValueNamespacedOutputPort
         ));
     }
 
+    // @codeCoverageIgnoreStart
     /**
      * @inheritDoc
      */
@@ -40,4 +41,5 @@ class KeyValueNamespacedHttpPresenter implements KeyValueNamespacedOutputPort
             'Unable to retrieve namespaced keys'
         ));
     }
+    // @codeCoverageIgnoreEnd
 }

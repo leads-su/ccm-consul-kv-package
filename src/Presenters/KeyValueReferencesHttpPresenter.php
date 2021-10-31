@@ -27,6 +27,7 @@ class KeyValueReferencesHttpPresenter implements KeyValueReferencesOutputPort
         ));
     }
 
+    // @codeCoverageIgnoreStart
     /**
      * @inheritDoc
      */
@@ -40,4 +41,5 @@ class KeyValueReferencesHttpPresenter implements KeyValueReferencesOutputPort
             'Unable to retrieve references list'
         ));
     }
+    // @codeCoverageIgnoreEnd
 }
