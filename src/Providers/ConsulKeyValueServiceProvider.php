@@ -8,6 +8,7 @@ use ConsulConfigManager\Consul\KeyValue\UseCases;
 use ConsulConfigManager\Consul\KeyValue\Presenters;
 use ConsulConfigManager\Domain\DomainServiceProvider;
 use ConsulConfigManager\Consul\KeyValue\Http\Controllers;
+use ConsulConfigManager\Consul\Agent\Commands\KeyValueSync;
 use ConsulConfigManager\Consul\KeyValue\ConsulKeyValueDomain;
 use ConsulConfigManager\Consul\KeyValue\Services\KeyValueService;
 use ConsulConfigManager\Consul\KeyValue\Projectors\KeyValueProjector;
@@ -25,7 +26,9 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
      * List of commands provided by package
      * @var array
      */
-    protected array $packageCommands = [];
+    protected array $packageCommands = [
+        KeyValueSync::class,
+    ];
 
     /**
      * List of repositories provided by package
