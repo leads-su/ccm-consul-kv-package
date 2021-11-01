@@ -1,6 +1,6 @@
 <?php
 
-namespace ConsulConfigManager\Consul\Agent\Commands;
+namespace ConsulConfigManager\Consul\KeyValue\Commands;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
@@ -10,7 +10,7 @@ use ConsulConfigManager\Consul\KeyValue\Interfaces\KeyValueRepositoryInterface;
 
 /**
  * Class KeyValueSync
- * @package ConsulConfigManager\Consul\Agent\Commands
+ * @package ConsulConfigManager\Consul\KeyValue\Commands
  */
 class KeyValueSync extends Command
 {
