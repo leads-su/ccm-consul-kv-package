@@ -14,6 +14,5 @@ npm-debug.log
 yarn-error.log
 .idea
 .vscode
-composer.lock
 .phpunit.result.cache
 .php-cs-fixer.cache

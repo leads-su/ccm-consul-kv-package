@@ -145,7 +145,6 @@ class ResponseTransformerService
     {
         $result = [];
         foreach ($sourceData as $key => $value) {
-            $originalKey = $key;
             if (array_key_exists($key, $this->keysMap) || isset($this->keysMap[$key])) {
                 $key = $this->keysMap[$key];
             }
