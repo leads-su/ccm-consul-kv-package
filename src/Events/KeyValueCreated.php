@@ -3,7 +3,7 @@
 namespace ConsulConfigManager\Consul\KeyValue\Events;
 
 use Illuminate\Support\Arr;
-use ConsulConfigManager\Users\Domain\Interfaces\UserEntity;
+use ConsulConfigManager\Users\Interfaces\UserInterface;
 
 /**
  * Class KeyValueCreated
@@ -27,9 +27,9 @@ class KeyValueCreated extends AbstractEvent
      * KeyValueCreated constructor.
      * @param string $path
      * @param array $value
-     * @param UserEntity|int|null $user
+     * @param UserInterface|int|null $user
      */
-    public function __construct(string $path, array $value, UserEntity|int|null $user = null)
+    public function __construct(string $path, array $value, UserInterface|int|null $user = null)
     {
         $this->path = $path;
         $this->value = $value;

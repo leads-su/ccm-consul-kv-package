@@ -4,17 +4,16 @@ namespace ConsulConfigManager\Consul\KeyValue\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Spatie\EventSourcing\Facades\Projectionist;
+use ConsulConfigManager\Consul\KeyValue\Commands;
+use ConsulConfigManager\Consul\KeyValue\Services;
 use ConsulConfigManager\Consul\KeyValue\UseCases;
+use ConsulConfigManager\Consul\KeyValue\Interfaces;
 use ConsulConfigManager\Consul\KeyValue\Presenters;
+use ConsulConfigManager\Consul\KeyValue\Projectors;
+use ConsulConfigManager\Consul\KeyValue\Repositories;
 use ConsulConfigManager\Domain\DomainServiceProvider;
 use ConsulConfigManager\Consul\KeyValue\Http\Controllers;
 use ConsulConfigManager\Consul\KeyValue\ConsulKeyValueDomain;
-use ConsulConfigManager\Consul\KeyValue\Commands\KeyValueSync;
-use ConsulConfigManager\Consul\KeyValue\Services\KeyValueService;
-use ConsulConfigManager\Consul\KeyValue\Projectors\KeyValueProjector;
-use ConsulConfigManager\Consul\KeyValue\Repositories\KeyValueRepository;
-use ConsulConfigManager\Consul\KeyValue\Interfaces\KeyValueServiceInterface;
-use ConsulConfigManager\Consul\KeyValue\Interfaces\KeyValueRepositoryInterface;
 
 /**
  * Class ConsulKeyValueServiceProvider
@@ -27,7 +26,7 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
      * @var array
      */
     protected array $packageCommands = [
-        KeyValueSync::class,
+        Commands\KeyValueSync::class,
     ];
 
     /**
@@ -35,7 +34,8 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
      * @var array
      */
     protected array $packageRepositories = [
-        KeyValueRepositoryInterface::class      =>  KeyValueRepository::class,
+        Interfaces\KeyValueRepositoryInterface::class          =>  Repositories\KeyValueRepository::class,
+        Interfaces\KeyValuePendingRepositoryInterface::class   =>  Repositories\KeyValuePendingRepository::class,
     ];
 
     /**
@@ -147,25 +147,91 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
      */
     protected function registerInterceptors(): void
     {
+        $this->registerKeyValueInterceptors();
+        $this->registerKeyValuePendingInterceptors();
+    }
+
+    /**
+     * Register KeyValue interceptors
+     * @return void
+     */
+    private function registerKeyValueInterceptors(): void
+    {
         $this->registerInterceptorFromParameters(
-            UseCases\Namespaced\KeyValueNamespacedInputPort::class,
-            UseCases\Namespaced\KeyValueNamespacedInteractor::class,
-            Controllers\KeyValueNamespacedController::class,
-            Presenters\KeyValueNamespacedHttpPresenter::class,
+            UseCases\KeyValue\Namespaced\KeyValueNamespacedInputPort::class,
+            UseCases\KeyValue\Namespaced\KeyValueNamespacedInteractor::class,
+            Controllers\KeyValue\KeyValueNamespacedController::class,
+            Presenters\KeyValue\KeyValueNamespacedHttpPresenter::class,
         );
 
         $this->registerInterceptorFromParameters(
-            UseCases\References\KeyValueReferencesInputPort::class,
-            UseCases\References\KeyValueReferencesInteractor::class,
-            Controllers\KeyValueReferencesController::class,
-            Presenters\KeyValueReferencesHttpPresenter::class,
+            UseCases\KeyValue\References\KeyValueReferencesInputPort::class,
+            UseCases\KeyValue\References\KeyValueReferencesInteractor::class,
+            Controllers\KeyValue\KeyValueReferencesController::class,
+            Presenters\KeyValue\KeyValueReferencesHttpPresenter::class,
         );
 
         $this->registerInterceptorFromParameters(
-            UseCases\Get\KeyValueGetInputPort::class,
-            UseCases\Get\KeyValueGetInteractor::class,
-            Controllers\KeyValueGetController::class,
-            Presenters\KeyValueGetHttpPresenter::class,
+            UseCases\KeyValue\Get\KeyValueGetInputPort::class,
+            UseCases\KeyValue\Get\KeyValueGetInteractor::class,
+            Controllers\KeyValue\KeyValueGetController::class,
+            Presenters\KeyValue\KeyValueGetHttpPresenter::class,
+        );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValue\Menu\KeyValueMenuInputPort::class,
+            UseCases\KeyValue\Menu\KeyValueMenuInteractor::class,
+            Controllers\KeyValue\KeyValueMenuController::class,
+            Presenters\KeyValue\KeyValueMenuHttpPresenter::class,
+        );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValue\Structure\KeyValueStructureInputPort::class,
+            UseCases\KeyValue\Structure\KeyValueStructureInteractor::class,
+            Controllers\KeyValue\KeyValueStructureController::class,
+            Presenters\KeyValue\KeyValueStructureHttpPresenter::class,
+        );
+    }
+
+    /**
+     * Register KeyValuePending interceptors
+     * @return void
+     */
+    private function registerKeyValuePendingInterceptors(): void
+    {
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValuePending\List\KeyValuePendingListInputPort::class,
+            UseCases\KeyValuePending\List\KeyValuePendingListInteractor::class,
+            Controllers\KeyValuePending\KeyValuePendingListController::class,
+            Presenters\KeyValuePending\KeyValuePendingListHttpPresenter::class,
+        );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValuePending\Get\KeyValuePendingGetInputPort::class,
+            UseCases\KeyValuePending\Get\KeyValuePendingGetInteractor::class,
+            Controllers\KeyValuePending\KeyValuePendingGetController::class,
+            Presenters\KeyValuePending\KeyValuePendingGetHttpPresenter::class,
+        );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValuePending\Create\KeyValuePendingCreateInputPort::class,
+            UseCases\KeyValuePending\Create\KeyValuePendingCreateInteractor::class,
+            Controllers\KeyValuePending\KeyValuePendingCreateController::class,
+            Presenters\KeyValuePending\KeyValuePendingCreateHttpPresenter::class,
+        );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValuePending\Update\KeyValuePendingUpdateInputPort::class,
+            UseCases\KeyValuePending\Update\KeyValuePendingUpdateInteractor::class,
+            Controllers\KeyValuePending\KeyValuePendingUpdateController::class,
+            Presenters\KeyValuePending\KeyValuePendingUpdateHttpPresenter::class,
+        );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValuePending\Delete\KeyValuePendingDeleteInputPort::class,
+            UseCases\KeyValuePending\Delete\KeyValuePendingDeleteInteractor::class,
+            Controllers\KeyValuePending\KeyValuePendingDeleteController::class,
+            Presenters\KeyValuePending\KeyValuePendingDeleteHttpPresenter::class,
         );
     }
 
@@ -174,7 +240,7 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
      */
     protected function registerServices(): void
     {
-        $this->app->bind(KeyValueServiceInterface::class, KeyValueService::class);
+        $this->app->bind(Interfaces\KeyValueServiceInterface::class, Services\KeyValueService::class);
     }
 
     /**
@@ -190,7 +256,8 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
     protected function registerProjectors(): void
     {
         Projectionist::addProjectors([
-            KeyValueProjector::class,
+            Projectors\KeyValueProjector::class,
+            Projectors\KeyValuePendingProjector::class,
         ]);
     }
 }

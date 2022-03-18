@@ -86,6 +86,7 @@ class KeyValueSync extends Command
         $keyValueStorage = [];
         $this->info('Retrieving values for ' . $keysCount . ' key(s)...');
         $progress = $this->output->createProgressBar($keysCount);
+        $progress->setFormat('very_verbose');
         $progress->start();
 
         foreach ($keysList as $key) {

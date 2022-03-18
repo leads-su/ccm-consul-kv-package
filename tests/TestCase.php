@@ -6,11 +6,11 @@ use Illuminate\Foundation\Application;
 use ConsulConfigManager\Testing\Concerns;
 use ConsulConfigManager\Users\Models\User;
 use Spatie\EventSourcing\EventSourcingServiceProvider;
+use ConsulConfigManager\Users\ValueObjects\EmailValueObject;
 use ConsulConfigManager\Consul\KeyValue\ConsulKeyValueDomain;
 use ConsulConfigManager\Users\Providers\UsersServiceProvider;
-use ConsulConfigManager\Users\Domain\ValueObjects\EmailValueObject;
-use ConsulConfigManager\Users\Domain\ValueObjects\PasswordValueObject;
-use ConsulConfigManager\Users\Domain\ValueObjects\UsernameValueObject;
+use ConsulConfigManager\Users\ValueObjects\PasswordValueObject;
+use ConsulConfigManager\Users\ValueObjects\UsernameValueObject;
 use ConsulConfigManager\Consul\KeyValue\Providers\ConsulKeyValueServiceProvider;
 
 /**

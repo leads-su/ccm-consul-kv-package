@@ -7,10 +7,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use ConsulConfigManager\Users\Models\User;
 use ConsulConfigManager\Consul\KeyValue\Test\TestCase;
-use ConsulConfigManager\Users\Domain\Interfaces\UserEntity;
+use ConsulConfigManager\Users\ValueObjects\EmailValueObject;
 use ConsulConfigManager\Consul\KeyValue\Events\AbstractEvent;
-use ConsulConfigManager\Users\Domain\ValueObjects\EmailValueObject;
-use ConsulConfigManager\Users\Domain\ValueObjects\UsernameValueObject;
+use ConsulConfigManager\Users\ValueObjects\UsernameValueObject;
 
 /**
  * Class AbstractEventTest

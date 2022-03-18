@@ -2,7 +2,7 @@
 
 namespace ConsulConfigManager\Consul\KeyValue\Events;
 
-use ConsulConfigManager\Users\Domain\Interfaces\UserEntity;
+use ConsulConfigManager\Users\Interfaces\UserInterface;
 
 /**
  * Class KeyValueDeleted
@@ -12,9 +12,9 @@ class KeyValueDeleted extends AbstractEvent
 {
     /**
      * KeyValueDeleted constructor.
-     * @param UserEntity|int|null $user
+     * @param UserInterface|int|null $user
      */
-    public function __construct(UserEntity|int|null $user = null)
+    public function __construct(UserInterface|int|null $user = null)
     {
         $this->user = $user;
         parent::__construct();

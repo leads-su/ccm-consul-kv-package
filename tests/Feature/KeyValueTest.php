@@ -91,6 +91,8 @@ class KeyValueTest extends TestCase
             'deleted_at',
         ]);
         ksort($decoded);
+        $this->assertArrayHasKey('changelog', $decoded);
+        unset($decoded['changelog']);
         $this->assertSame([
             'id'        =>  1,
             'path'      =>  'example/test',
@@ -98,7 +100,7 @@ class KeyValueTest extends TestCase
             'uuid'      =>  self::$uuid,
             'value'     =>  [
                 'type'  =>  'string',
-                'value' =>  'Hello World!',
+                'value' =>  '********',
             ],
         ], $decoded);
     }
