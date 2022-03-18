@@ -20,6 +20,12 @@ interface KeyValuePendingRepositoryInterface
     public function all(array $columns = ['*']): Collection;
 
     /**
+     * Get list of all entities as a list of keys
+     * @return array
+     */
+    public function allKeys(): array;
+
+    /**
      * Find entity by path
      * @param string         $path
      * @param array|string[] $columns

@@ -3,6 +3,7 @@
 namespace ConsulConfigManager\Consul\KeyValue\Helpers;
 
 use ConsulConfigManager\Consul\KeyValue\Interfaces\KeyValueRepositoryInterface;
+use ConsulConfigManager\Consul\KeyValue\Interfaces\KeyValuePendingRepositoryInterface;
 
 /**
  * Class MenuBuilderHelper
@@ -12,12 +13,18 @@ class MenuBuilderHelper
 {
     /**
      * Generate key value tree for menu
-     * @param KeyValueRepositoryInterface $repository
+     * @param KeyValueRepositoryInterface|KeyValuePendingRepositoryInterface|array $repository
      * @return array
      */
-    public static function keyValueTree(KeyValueRepositoryInterface $repository): array
+    public static function keyValueTree(KeyValueRepositoryInterface|KeyValuePendingRepositoryInterface|array $repository): array
     {
-        $keys = $repository->allKeys();
+        // @codeCoverageIgnoreStart
+        if (is_array($repository)) {
+            $keys = $repository;
+        } else {
+            $keys = $repository->allKeys();
+        }
+        // @codeCoverageIgnoreEnd
         $tree = [];
 
         $globalIndex = 1;

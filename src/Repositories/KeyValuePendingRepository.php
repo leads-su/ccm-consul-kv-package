@@ -3,6 +3,7 @@
 namespace ConsulConfigManager\Consul\KeyValue\Repositories;
 
 use Throwable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Collection;
 use ConsulConfigManager\Consul\KeyValue\Models\KeyValuePending;
@@ -22,6 +23,16 @@ class KeyValuePendingRepository implements KeyValuePendingRepositoryInterface
     public function all(array $columns = ['*']): Collection
     {
         return KeyValuePending::all($columns);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function allKeys(): array
+    {
+        return array_map(static function (array $entity): string {
+            return Arr::get($entity, 'path');
+        }, $this->all()->toArray());
     }
 
     /**

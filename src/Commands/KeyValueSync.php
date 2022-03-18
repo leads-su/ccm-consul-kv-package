@@ -8,6 +8,7 @@ use Consul\Exceptions\RequestException;
 use ConsulConfigManager\Consul\KeyValue\Interfaces\KeyValueServiceInterface;
 use ConsulConfigManager\Consul\KeyValue\Interfaces\KeyValueRepositoryInterface;
 
+// @codeCoverageIgnoreStart
 /**
  * Class KeyValueSync
  * @package ConsulConfigManager\Consul\KeyValue\Commands
@@ -126,3 +127,4 @@ class KeyValueSync extends Command
         }
     }
 }
+// @codeCoverageIgnoreEnd
