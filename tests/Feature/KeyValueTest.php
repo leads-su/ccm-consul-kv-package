@@ -3,6 +3,7 @@
 namespace ConsulConfigManager\Consul\KeyValue\Test\Feature;
 
 use Illuminate\Support\Arr;
+use Illuminate\Http\Response;
 use ConsulConfigManager\Consul\KeyValue\Test\TestCase;
 use ConsulConfigManager\Consul\KeyValue\Models\KeyValue;
 use ConsulConfigManager\Consul\KeyValue\Interfaces\KeyValueInterface;
@@ -20,22 +21,28 @@ class KeyValueTest extends TestCase
      */
     private static string $uuid = '1ead0ce3-1651-446e-9935-e558ad766cae';
 
+    /**
+     * @return void
+     */
     public function testShouldPassIfEmptyKeyValuesNamespacedListCanBeRetrieved(): void
     {
         $response = $this->get('/consul/kv');
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertExactJson([
             'success'       =>  true,
-            'code'          =>  200,
+            'code'          =>  Response::HTTP_OK,
             'data'          =>  [],
             'message'       =>  'Successfully fetched namespaced keys',
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function testShouldPassIfEmptyKeyValuesReferencesListCanBeRetrieved(): void
     {
         $response = $this->get('/consul/kv/references');
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertExactJson([
             'success'       =>  true,
             'code'          =>  200,
@@ -44,14 +51,17 @@ class KeyValueTest extends TestCase
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function testShouldPassIfNonEmptyKeyValuesNamespacedListCanBeRetrieved(): void
     {
         $this->createAndGetKeyValue();
         $response = $this->get('/consul/kv');
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertExactJson([
             'success'           =>  true,
-            'code'              =>  200,
+            'code'              =>  Response::HTTP_OK,
             'data'              =>  [
                 'example'       =>  [
                     'example/test',
@@ -61,14 +71,17 @@ class KeyValueTest extends TestCase
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function testShouldPassIfNonEmptyKeyValuesReferencesListCanBeRetrieved(): void
     {
         $this->createAndGetKeyValue(true);
         $response = $this->get('/consul/kv/references');
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertExactJson([
             'success'           =>  true,
-            'code'              =>  200,
+            'code'              =>  Response::HTTP_OK,
             'data'              =>  [
                 [
                     'description'   =>  'Hello World!',
@@ -80,11 +93,14 @@ class KeyValueTest extends TestCase
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function testShouldPassIfKeyValueInformationCanBeRetrieved(): void
     {
         $this->createAndGetKeyValue();
         $response = $this->get('/consul/kv/example/test');
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
         $decoded = Arr::except($response->json('data'), [
             'created_at',
             'updated_at',
@@ -105,10 +121,58 @@ class KeyValueTest extends TestCase
         ], $decoded);
     }
 
+    /**
+     * @return void
+     */
+    public function testShouldPassIfValidDataReturnedFromMenuRequest(): void
+    {
+        $this->createAndGetKeyValue();
+        $response = $this->get('/consul/kv/menu');
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertExactJson([
+            'success'           =>  true,
+            'code'              =>  Response::HTTP_OK,
+            'data'              =>  [[
+                'id'            =>  1,
+                'name'          =>  'example',
+                'key'           =>  'example/',
+                'children'      =>  [[
+                    'id'        =>  2,
+                    'name'      =>  'test',
+                    'key'       =>  'example/test',
+                ]],
+            ]],
+            'message'           =>  'Successfully generated menu for KV Store',
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testShouldPassIfValidDataReturnedFromStructureRequest(): void
+    {
+        $this->createAndGetKeyValue();
+        $response = $this->get('/consul/kv/structure');
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertExactJson([
+            'success'           =>  true,
+            'code'              =>  Response::HTTP_OK,
+            'data'              =>  [
+                'example'       =>  [
+                    'example/',
+                ],
+            ],
+            'message'           =>  'Successfully generated structure for KV Store',
+        ]);
+    }
+
+    /**
+     * @return void
+     */
     public function testShouldPassIfKeyValueInformationCannotBeRetrieved(): void
     {
         $response = $this->get('/consul/kv/example/test2');
-        $response->assertStatus(404);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     /**

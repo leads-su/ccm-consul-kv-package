@@ -31,6 +31,8 @@ class KeyValuePendingUpdateController extends Controller
         $this->interactor = $interactor;
     }
 
+    // @codeCoverageIgnoreStart
+
     /**
      * Handle incoming request
      * @param KeyValuePendingCreateUpdateRequest $request

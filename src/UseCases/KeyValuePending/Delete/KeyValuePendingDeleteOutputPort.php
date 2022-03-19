@@ -19,6 +19,13 @@ interface KeyValuePendingDeleteOutputPort
     public function delete(KeyValuePendingDeleteResponseModel $responseModel): ViewModel;
 
     /**
+     * Output port for "not found"
+     * @param KeyValuePendingDeleteResponseModel $responseModel
+     * @return ViewModel
+     */
+    public function notFound(KeyValuePendingDeleteResponseModel $responseModel): ViewModel;
+
+    /**
      * Output port for "internal server error"
      * @param KeyValuePendingDeleteResponseModel $responseModel
      * @param Throwable $throwable

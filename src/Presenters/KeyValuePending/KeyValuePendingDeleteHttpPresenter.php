@@ -27,6 +27,18 @@ class KeyValuePendingDeleteHttpPresenter implements KeyValuePendingDeleteOutputP
         ));
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function notFound(KeyValuePendingDeleteResponseModel $responseModel): ViewModel
+    {
+        return new HttpResponseViewModel(response_error(
+            $responseModel->getEntity(),
+            'Unable to find requested pending consul key value',
+            Response::HTTP_NOT_FOUND,
+        ));
+    }
+
     // @codeCoverageIgnoreStart
 
     /**

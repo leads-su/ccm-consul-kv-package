@@ -42,8 +42,11 @@ class KeyValuePendingDeleteInteractor implements KeyValuePendingDeleteInputPort
     public function delete(KeyValuePendingDeleteRequestModel $requestModel): ViewModel
     {
         try {
-            $this->repository->delete($requestModel->getIdentifier());
-            return $this->output->delete(new KeyValuePendingDeleteResponseModel());
+            $result = $this->repository->delete($requestModel->getIdentifier());
+            if ($result) {
+                return $this->output->delete(new KeyValuePendingDeleteResponseModel());
+            }
+            return $this->output->notFound(new KeyValuePendingDeleteResponseModel());
             // @codeCoverageIgnoreStart
         } catch (Throwable $throwable) {
             return $this->output->internalServerError(new KeyValuePendingDeleteResponseModel(), $throwable);

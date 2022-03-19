@@ -28,8 +28,8 @@ class KeyValuePendingCreateUpdateRequest extends FormRequest
         return [
             'path'          =>  ['required', 'string'],
             'value'         =>  ['required', 'array'],
-            'value.*.type'  =>  ['required', 'string'],
-            'value.*.value' =>  ['required'],
+            'value.type'    =>  ['required', 'string'],
+            'value.value'   =>  ['required'],
         ];
     }
 }
