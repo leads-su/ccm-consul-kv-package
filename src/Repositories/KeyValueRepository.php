@@ -100,7 +100,7 @@ class KeyValueRepository implements KeyValueRepositoryInterface
         $model = $this->findOrFail($path, ['uuid']);
 
         KeyValueAggregateRoot::retrieve($model->getUuid())
-            ->updateEntity($value)
+            ->updateEntity($path, $value)
             ->persist();
 
         return $this->find($path);
@@ -116,7 +116,7 @@ class KeyValueRepository implements KeyValueRepositoryInterface
             $model = $this->findOrFail($path, ['uuid']);
 
             KeyValueAggregateRoot::retrieve($model->getUuid())
-                ->deleteEntity()
+                ->deleteEntity($path)
                 ->persist();
 
             return true;
@@ -164,12 +164,14 @@ class KeyValueRepository implements KeyValueRepositoryInterface
             }
         }
 
+        // @codeCoverageIgnoreStart
         // Required to resolve remaining data
         foreach ($dataForResolved as $model) {
             if ($model->reference) {
                 Arr::set($resolved, $model->path, Arr::get($model->resolveReferenceValue(), 'value'));
             }
         }
+        // @codeCoverageIgnoreEnd
 
         foreach ($references as $index => $reference) {
             $key = Arr::get($reference, 'value');

@@ -53,7 +53,7 @@ class KeyValueAggregateRootTest extends AbstractAggregateRootTest
     {
         $instance = KeyValueAggregateRoot::retrieve($this->uuid)
             ->createEntity($this->path, $this->value)
-            ->updateEntity([
+            ->updateEntity($this->path, [
                 'type'  =>  'string',
                 'value' =>  'Hello New World!',
             ])
@@ -70,11 +70,11 @@ class KeyValueAggregateRootTest extends AbstractAggregateRootTest
     {
         $instance = KeyValueAggregateRoot::retrieve($this->uuid)
             ->createEntity($this->path, $this->value)
-            ->updateEntity([
+            ->updateEntity($this->path, [
                 'type'  =>  'string',
                 'value' =>  'Hello New World!',
             ])
-            ->deleteEntity()
+            ->deleteEntity($this->path)
             ->persist();
         $this->assertInstanceOf(KeyValueAggregateRoot::class, $instance);
         $this->assertTrue($this->hasEventStored(KeyValueCreated::class));

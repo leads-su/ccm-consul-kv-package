@@ -43,6 +43,6 @@ class KeyValueUpdatedTest extends AbstractEventTest
      */
     protected function createClassInstance(array $data): KeyValueUpdated
     {
-        return new $this->activeEventHandler(Arr::get($data, 'value'), Arr::get($data, 'user'));
+        return new $this->activeEventHandler(Arr::get($data, 'path'), Arr::get($data, 'value'), Arr::get($data, 'user'));
     }
 }

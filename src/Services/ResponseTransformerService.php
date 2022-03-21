@@ -172,7 +172,9 @@ class ResponseTransformerService
             $key = Str::snake($key);
 
             if (is_array($value)) {
+                // @codeCoverageIgnoreStart
                 $result[$key] = $this->performKeysMapping($value);
+            // @codeCoverageIgnoreEnd
             } else {
                 $result[$key] = $value;
             }

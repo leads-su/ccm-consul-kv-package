@@ -34,6 +34,16 @@ Route::prefix('kv')->group(static function (): void {
             ->where('key', '[\w\s\-_\/]+');
     });
 
+    Route::post('', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValue\KeyValueCreateController::class)
+        ->name('domain.consul.kv.create');
+
+    Route::patch('', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValue\KeyValueUpdateController::class)
+        ->name('domain.consul.kv.update');
+
+    Route::delete('{key}', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValue\KeyValueDeleteController::class)
+        ->name('domain.consul.kv.delete')
+        ->where('key', '[\w\s\-_\/]+');
+
     Route::get('{key}', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValue\KeyValueGetController::class)
         ->name('domain.consul.kv.information')
         ->where('key', '[\w\s\-_\/]+');

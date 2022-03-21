@@ -32,6 +32,6 @@ class KeyValueDeletedTest extends AbstractEventTest
      */
     protected function createClassInstance(array $data): KeyValueDeleted
     {
-        return new $this->activeEventHandler(Arr::get($data, 'user'));
+        return new $this->activeEventHandler(Arr::get($data, 'path'), Arr::get($data, 'user'));
     }
 }

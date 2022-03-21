@@ -27,24 +27,26 @@ class KeyValueAggregateRoot extends AggregateRoot
 
     /**
      * Handle `update` event
+     * @param string $path
      * @param array $value
      * @param UserInterface|int|null $user
      * @return $this
      */
-    public function updateEntity(array $value, UserInterface|int|null $user = null): KeyValueAggregateRoot
+    public function updateEntity(string $path, array $value, UserInterface|int|null $user = null): KeyValueAggregateRoot
     {
-        $this->recordThat(new Events\KeyValueUpdated($value, $user));
+        $this->recordThat(new Events\KeyValueUpdated($path, $value, $user));
         return $this;
     }
 
     /**
      * Handle `delete` event
+     * @param string $path
      * @param UserInterface|int|null $user
      * @return $this
      */
-    public function deleteEntity(UserInterface|int|null $user = null): KeyValueAggregateRoot
+    public function deleteEntity(string $path, UserInterface|int|null $user = null): KeyValueAggregateRoot
     {
-        $this->recordThat(new Events\KeyValueDeleted($user));
+        $this->recordThat(new Events\KeyValueDeleted($path, $user));
         return $this;
     }
 }

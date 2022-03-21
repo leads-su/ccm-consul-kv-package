@@ -5,6 +5,7 @@ namespace ConsulConfigManager\Consul\KeyValue\Providers;
 use Illuminate\Support\Facades\Route;
 use Spatie\EventSourcing\Facades\Projectionist;
 use ConsulConfigManager\Consul\KeyValue\Commands;
+use ConsulConfigManager\Consul\KeyValue\Reactors;
 use ConsulConfigManager\Consul\KeyValue\Services;
 use ConsulConfigManager\Consul\KeyValue\UseCases;
 use ConsulConfigManager\Consul\KeyValue\Interfaces;
@@ -191,6 +192,27 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
             Controllers\KeyValue\KeyValueStructureController::class,
             Presenters\KeyValue\KeyValueStructureHttpPresenter::class,
         );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValue\Create\KeyValueCreateInputPort::class,
+            UseCases\KeyValue\Create\KeyValueCreateInteractor::class,
+            Controllers\KeyValue\KeyValueCreateController::class,
+            Presenters\KeyValue\KeyValueCreateHttpPresenter::class,
+        );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValue\Update\KeyValueUpdateInputPort::class,
+            UseCases\KeyValue\Update\KeyValueUpdateInteractor::class,
+            Controllers\KeyValue\KeyValueUpdateController::class,
+            Presenters\KeyValue\KeyValueUpdateHttpPresenter::class,
+        );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValue\Delete\KeyValueDeleteInputPort::class,
+            UseCases\KeyValue\Delete\KeyValueDeleteInteractor::class,
+            Controllers\KeyValue\KeyValueDeleteController::class,
+            Presenters\KeyValue\KeyValueDeleteHttpPresenter::class,
+        );
     }
 
     /**
@@ -248,6 +270,11 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
      */
     protected function registerReactors(): void
     {
+        Projectionist::addReactors([
+            Reactors\KeyValue\KeyValueReactorNewCreated::class,
+            Reactors\KeyValue\KeyValueReactorExistingUpdated::class,
+            Reactors\KeyValue\KeyValueReactorExistingDeleted::class,
+        ]);
     }
 
     /**
