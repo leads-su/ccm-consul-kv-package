@@ -3,14 +3,14 @@
 namespace ConsulConfigManager\Consul\KeyValue\Presenters\KeyValuePending;
 
 use Throwable;
-use function config;
-use function response_error;
 use Illuminate\Http\Response;
-use function response_success;
 use ConsulConfigManager\Domain\Interfaces\ViewModel;
 use ConsulConfigManager\Domain\ViewModels\HttpResponseViewModel;
 use ConsulConfigManager\Consul\KeyValue\UseCases\KeyValuePending\Structure\KeyValuePendingStructureOutputPort;
 use ConsulConfigManager\Consul\KeyValue\UseCases\KeyValuePending\Structure\KeyValuePendingStructureResponseModel;
+use function config;
+use function response_error;
+use function response_success;
 
 /**
  * Class KeyValuePendingStructureHttpPresenter

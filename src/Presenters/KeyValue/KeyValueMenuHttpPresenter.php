@@ -3,14 +3,14 @@
 namespace ConsulConfigManager\Consul\KeyValue\Presenters\KeyValue;
 
 use Throwable;
-use function config;
-use function response_error;
 use Illuminate\Http\Response;
-use function response_success;
 use ConsulConfigManager\Domain\Interfaces\ViewModel;
 use ConsulConfigManager\Domain\ViewModels\HttpResponseViewModel;
 use ConsulConfigManager\Consul\KeyValue\UseCases\KeyValue\Menu\KeyValueMenuOutputPort;
 use ConsulConfigManager\Consul\KeyValue\UseCases\KeyValue\Menu\KeyValueMenuResponseModel;
+use function config;
+use function response_error;
+use function response_success;
 
 /**
  * Class KeyValueMenuHttpPresenter
