@@ -88,6 +88,26 @@ class KeyValuePendingRepositoryTest extends AbstractRepositoryTest
      * @dataProvider entityDataProvider
      * @return void
      */
+    public function testShouldPassIfValidDataReturnedFromAllNamespacedRequest(array $data): void
+    {
+        $entity = $this->repository()->create(Arr::get($data, 'path'), Arr::get($data, 'value'));
+        $this->assertSameReturned($entity, $data);
+
+        [$key, $value] = explode('/', Arr::get($data, 'path'));
+
+        $response = $this->repository()->allNamespaced();
+        $this->assertEquals([
+            $key    =>  [
+                Arr::get($data, 'path'),
+            ],
+        ], $response);
+    }
+
+    /**
+     * @param array $data
+     * @dataProvider entityDataProvider
+     * @return void
+     */
     public function testShouldPassIfValidDataReturnedFromFindRequest(array $data): void
     {
         $entity = $this->repository()->create(Arr::get($data, 'path'), Arr::get($data, 'value'));

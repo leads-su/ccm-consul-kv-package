@@ -16,6 +16,12 @@ Route::prefix('kv')->group(static function (): void {
         ->name('domain.consul.kv.structure');
 
     Route::prefix('pending')->group(static function (): void {
+        Route::get('menu', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValuePending\KeyValuePendingMenuController::class)
+            ->name('domain.consul.kv.pending.menu');
+
+        Route::get('structure', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValuePending\KeyValuePendingStructureController::class)
+            ->name('domain.consul.kv.pending.structure');
+
         Route::get('', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValuePending\KeyValuePendingListController::class)
             ->name('domain.consul.kv.pending.list');
 

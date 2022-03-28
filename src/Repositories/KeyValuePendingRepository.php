@@ -38,6 +38,23 @@ class KeyValuePendingRepository implements KeyValuePendingRepositoryInterface
     /**
      * @inheritDoc
      */
+    public function allNamespaced(array $columns = ['*']): array
+    {
+        $keys = $this->allKeys();
+
+        $namespaced = [];
+
+        foreach ($keys as $key) {
+            $namespace = Arr::first(explode('/', $key));
+            $namespaced[$namespace][] = $key;
+        }
+
+        return $namespaced;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function find(string $path, array $columns = ['*']): KeyValuePendingInterface|null
     {
         return KeyValuePending::where('path', '=', $path)->first($columns);

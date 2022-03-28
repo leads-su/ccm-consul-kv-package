@@ -175,6 +175,51 @@ class KeyValuePendingTest extends TestCase
     }
 
     /**
+     * @return void
+     */
+    public function testShouldPassIfValidDataReturnedFromMenuRequest(): void
+    {
+        $this->createAndGetKeyValue();
+        $response = $this->get('/consul/kv/pending/menu');
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertExactJson([
+            'success'           =>  true,
+            'code'              =>  Response::HTTP_OK,
+            'data'              =>  [[
+                'id'            =>  1,
+                'name'          =>  'example',
+                'key'           =>  'example/',
+                'children'      =>  [[
+                    'id'        =>  2,
+                    'name'      =>  'test',
+                    'key'       =>  'example/test',
+                ]],
+            ]],
+            'message'           =>  'Successfully generated menu for KV Store of pending values',
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testShouldPassIfValidDataReturnedFromStructureRequest(): void
+    {
+        $this->createAndGetKeyValue();
+        $response = $this->get('/consul/kv/pending/structure');
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertExactJson([
+            'success'           =>  true,
+            'code'              =>  Response::HTTP_OK,
+            'data'              =>  [
+                'example'       =>  [
+                    'example/',
+                ],
+            ],
+            'message'           =>  'Successfully generated structure for KV Store of pending values',
+        ]);
+    }
+
+    /**
      * Create payload based on provided type
      * @param string $type
      * @return mixed

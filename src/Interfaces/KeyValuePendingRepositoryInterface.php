@@ -26,6 +26,14 @@ interface KeyValuePendingRepositoryInterface
     public function allKeys(): array;
 
     /**
+     * Get list of all KV entries from database in a namespaced style
+     * @param array|string[] $columns
+     *
+     * @return array
+     */
+    public function allNamespaced(array $columns = ['*']): array;
+
+    /**
      * Find entity by path
      * @param string         $path
      * @param array|string[] $columns

@@ -255,6 +255,20 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
             Controllers\KeyValuePending\KeyValuePendingDeleteController::class,
             Presenters\KeyValuePending\KeyValuePendingDeleteHttpPresenter::class,
         );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValuePending\Menu\KeyValuePendingMenuInputPort::class,
+            UseCases\KeyValuePending\Menu\KeyValuePendingMenuInteractor::class,
+            Controllers\KeyValuePending\KeyValuePendingMenuController::class,
+            Presenters\KeyValuePending\KeyValuePendingMenuHttpPresenter::class,
+        );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValuePending\Structure\KeyValuePendingStructureInputPort::class,
+            UseCases\KeyValuePending\Structure\KeyValuePendingStructureInteractor::class,
+            Controllers\KeyValuePending\KeyValuePendingStructureController::class,
+            Presenters\KeyValuePending\KeyValuePendingStructureHttpPresenter::class,
+        );
     }
 
     /**
