@@ -103,6 +103,7 @@ return [
     |
     */
     'system_user'           =>  [
+        'identifier'        =>  env('CONSUL_SYSTEM_USER_ID', 1),
         'email'             =>  env('CONSUL_SYSTEM_USER_EMAIL', 'admin@leads.su'),
         'password'          =>  env('CONSUL_SYSTEM_USER_PASSWORD', '1234567890'),
     ],

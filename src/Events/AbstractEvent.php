@@ -107,6 +107,6 @@ abstract class AbstractEvent extends ShouldBeStored
                 // @codeCoverageIgnoreEnd
             }
         }
-        return 1;
+        return config('consul.kv.system_user.identifier', 1);
     }
 }
