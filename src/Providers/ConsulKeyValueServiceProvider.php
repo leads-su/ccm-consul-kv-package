@@ -28,6 +28,7 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
      */
     protected array $packageCommands = [
         Commands\KeyValueSync::class,
+        Commands\KeyValueApply::class,
     ];
 
     /**
