@@ -20,6 +20,21 @@ interface KeyValueRepositoryInterface
     public function all(array $columns = ['*']): Collection;
 
     /**
+     * Get total count of entities in the database
+     * @return int
+     */
+    public function count(): int;
+
+    /**
+     * Get count of entities matching specified condition
+     * @param string $field
+     * @param mixed $value
+     * @param string $operator
+     * @return int
+     */
+    public function countForField(string $field, mixed $value, string $operator = '='): int;
+
+    /**
      * Get list of all KV entries as a list of keys
      * @return array
      */

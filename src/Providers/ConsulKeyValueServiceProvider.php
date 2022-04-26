@@ -214,6 +214,13 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
             Controllers\KeyValue\KeyValueDeleteController::class,
             Presenters\KeyValue\KeyValueDeleteHttpPresenter::class,
         );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValue\Stats\KeyValueStatsInputPort::class,
+            UseCases\KeyValue\Stats\KeyValueStatsInteractor::class,
+            Controllers\KeyValue\KeyValueStatsController::class,
+            Presenters\KeyValue\KeyValueStatsHttpPresenter::class,
+        );
     }
 
     /**
@@ -269,6 +276,13 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
             UseCases\KeyValuePending\Structure\KeyValuePendingStructureInteractor::class,
             Controllers\KeyValuePending\KeyValuePendingStructureController::class,
             Presenters\KeyValuePending\KeyValuePendingStructureHttpPresenter::class,
+        );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValuePending\Stats\KeyValuePendingStatsInputPort::class,
+            UseCases\KeyValuePending\Stats\KeyValuePendingStatsInteractor::class,
+            Controllers\KeyValuePending\KeyValuePendingStatsController::class,
+            Presenters\KeyValuePending\KeyValuePendingStatsHttpPresenter::class,
         );
     }
 

@@ -54,3 +54,10 @@ Route::prefix('kv')->group(static function (): void {
         ->name('domain.consul.kv.information')
         ->where('key', '[\w\s\-_\/]+');
 });
+
+Route::prefix('stats')->group(static function (): void {
+    Route::get('key-value', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValue\KeyValueStatsController::class)
+        ->name('domain.consul.stats.key_value');
+    Route::get('pending-key-value', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValuePending\KeyValuePendingStatsController::class)
+        ->name('domain.consul.stats.pending_key_value');
+});

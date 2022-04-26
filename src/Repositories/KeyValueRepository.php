@@ -28,6 +28,22 @@ class KeyValueRepository implements KeyValueRepositoryInterface
     /**
      * @inheritDoc
      */
+    public function count(): int
+    {
+        return KeyValue::count();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function countForField(string $field, mixed $value, string $operator = '='): int
+    {
+        return KeyValue::where($field, $operator, $value)->count();
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function allKeys(): array
     {
         return array_map(static function (array $entity): string {

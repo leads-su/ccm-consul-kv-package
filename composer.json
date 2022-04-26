@@ -1,7 +1,7 @@
 {
   "name": "ccm/consul-kv",
   "description": "CCM package which provides integration with Consul KV storage",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "license": "MIT",
   "keywords": [
     "ccm",
