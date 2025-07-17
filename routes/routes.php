@@ -40,6 +40,19 @@ Route::prefix('kv')->group(static function (): void {
             ->where('key', '[\w\s\-_\/]+');
     });
 
+    Route::prefix('directory')->group(static function (): void {
+        Route::post('', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValue\Directory\DirectoryCreateController::class)
+            ->name('domain.consul.kv.directory.create');
+
+        Route::get('{path}/keys', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValue\Directory\DirectoryListKeysController::class)
+            ->name('domain.consul.kv.directory.keys')
+            ->where('path', '[\w\s\-_\/]+');
+
+        Route::get('{path}', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValue\Directory\DirectoryGetContentsController::class)
+            ->name('domain.consul.kv.directory.contents')
+            ->where('path', '[\w\s\-_\/]+');
+    });
+
     Route::post('', \ConsulConfigManager\Consul\KeyValue\Http\Controllers\KeyValue\KeyValueCreateController::class)
         ->name('domain.consul.kv.create');
 
