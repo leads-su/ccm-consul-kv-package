@@ -122,4 +122,104 @@ class KeyValueService extends AbstractService implements KeyValueServiceInterfac
     {
         return $this->service->delete($key);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function createDirectory(string $path): bool
+    {
+        $directoryPath = $this->normalizeDirectoryPath($path);
+        $creationResult = $this->service->put($directoryPath, null);
+
+        if ($creationResult) {
+            $this->createKeyValue(
+                sprintf('%s%s', $directoryPath, '__ccm_system'),
+                [
+                    'created_at' => now()->format('Y-m-d'),
+                ]
+            );
+        }
+
+        return $creationResult;
+    }
+
+        /**
+     * @inheritDoc
+     */
+    public function deleteDirectory(string $path, bool $recursive = true): bool
+    {
+        if ($recursive) {
+            $prefixPath = rtrim(trim($path), '/');
+
+            try {
+
+                $keys = $this->service->get($prefixPath, ['keys' => true]);
+
+
+                foreach ($keys as $key) {
+                    $this->service->delete($key);
+                }
+
+                $this->service->delete($prefixPath, ['recurse' => true]);
+
+                $directoryPath = $this->normalizeDirectoryPath($path);
+                return $this->service->delete($directoryPath, ['recurse' => true]);
+
+            } catch (\Exception $e) {
+
+                return $this->service->delete($prefixPath, ['recurse' => true]);
+            }
+        } else {
+            $directoryPath = $this->normalizeDirectoryPath($path);
+            return $this->service->delete($directoryPath);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function listDirectoryKeys(string $path): array
+    {
+        $directoryPath = $this->normalizeDirectoryPath($path);
+        return $this->service->get($directoryPath, ['keys' => true]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDirectoryContents(string $path): array
+    {
+        $directoryPath = $this->normalizeDirectoryPath($path);
+        $response = $this->service->get($directoryPath, ['recurse' => true]);
+        $result = [];
+
+        foreach ($response as $entry) {
+            $key = trim(Arr::get($entry, 'Key'));
+            $value = Arr::get($entry, 'Value');
+            if ($value !== null) {
+                $value = base64_decode($value);
+                try {
+                    $decodedValue = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+                    $value = $decodedValue;
+                    // @codeCoverageIgnoreStart
+                } catch (Throwable $exception) {
+                    Log::info(sprintf('Failed to decode value for key `%s` with exception: %s', $key, $exception->getMessage()));
+                }
+                // @codeCoverageIgnoreEnd
+            }
+            $result[$key] = $value;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Normalize directory path to ensure it ends with a slash
+     * @param string $path
+     * @return string
+     */
+    private function normalizeDirectoryPath(string $path): string
+    {
+        return rtrim(trim($path), '/') . '/';
+    }
 }

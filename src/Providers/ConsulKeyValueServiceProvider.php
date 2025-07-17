@@ -29,6 +29,7 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
     protected array $packageCommands = [
         Commands\KeyValueSync::class,
         Commands\KeyValueApply::class,
+        Commands\KeyValueDirDelete::class,
     ];
 
     /**
@@ -151,6 +152,7 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
     {
         $this->registerKeyValueInterceptors();
         $this->registerKeyValuePendingInterceptors();
+        $this->registerDirectoryInterceptors();
     }
 
     /**
@@ -283,6 +285,34 @@ class ConsulKeyValueServiceProvider extends DomainServiceProvider
             UseCases\KeyValuePending\Stats\KeyValuePendingStatsInteractor::class,
             Controllers\KeyValuePending\KeyValuePendingStatsController::class,
             Presenters\KeyValuePending\KeyValuePendingStatsHttpPresenter::class,
+        );
+    }
+
+    /**
+     * Register KeyValue Directory interceptors
+     * @return void
+     */
+    private function registerDirectoryInterceptors(): void
+    {
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValue\Directory\DirectoryCreateInputPort::class,
+            UseCases\KeyValue\Directory\DirectoryCreateInteractor::class,
+            Controllers\KeyValue\Directory\DirectoryCreateController::class,
+            Presenters\KeyValue\Directory\DirectoryCreateHttpPresenter::class,
+        );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValue\Directory\DirectoryListKeysInputPort::class,
+            UseCases\KeyValue\Directory\DirectoryListKeysInteractor::class,
+            Controllers\KeyValue\Directory\DirectoryListKeysController::class,
+            Presenters\KeyValue\Directory\DirectoryListKeysHttpPresenter::class,
+        );
+
+        $this->registerInterceptorFromParameters(
+            UseCases\KeyValue\Directory\DirectoryGetContentsInputPort::class,
+            UseCases\KeyValue\Directory\DirectoryGetContentsInteractor::class,
+            Controllers\KeyValue\Directory\DirectoryGetContentsController::class,
+            Presenters\KeyValue\Directory\DirectoryGetContentsHttpPresenter::class,
         );
     }
 

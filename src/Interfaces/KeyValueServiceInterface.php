@@ -82,4 +82,41 @@ interface KeyValueServiceInterface
      * @return bool
      */
     public function deleteKey(string $key): bool;
+
+    /**
+     * Create a directory structure in Consul KV store
+     * @param string $path Directory path (will be normalized with trailing slash)
+     *
+     * @throws RequestException
+     * @return bool
+     */
+    public function createDirectory(string $path): bool;
+
+    /**
+     * Delete a directory and optionally all its contents
+     * @param string $path Directory path
+     * @param bool $recursive Whether to delete all contents recursively
+     *
+     * @throws RequestException
+     * @return bool
+     */
+    public function deleteDirectory(string $path, bool $recursive = true): bool;
+
+    /**
+     * List all keys within a directory
+     * @param string $path Directory path
+     *
+     * @throws RequestException
+     * @return array
+     */
+    public function listDirectoryKeys(string $path): array;
+
+    /**
+     * Get all key-value pairs within a directory recursively
+     * @param string $path Directory path
+     *
+     * @throws RequestException
+     * @return array
+     */
+    public function getDirectoryContents(string $path): array;
 }
